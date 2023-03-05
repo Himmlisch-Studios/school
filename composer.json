@@ -1,0 +1,23 @@
+{
+    "name": "himmlisch-studios/school",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Himmlisch Web",
+            "email": "web@himmlisch.com.mx"
+        }
+    ],
+    "require": {
+        "foil/foil": "^0.6.7"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.2"
+    }
+}

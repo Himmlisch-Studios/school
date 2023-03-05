@@ -1,0 +1,90 @@
+@import url('./normalize.css');
+@import url('./skeleton.css');
+
+@import url('https://api.fonts.coollabs.io/css2?family=Inter:wght@400;600&display=swap');
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+body {
+    background-color: #272f35;
+    color: #fff;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+}
+
+a {
+    color: #e23345;
+}
+
+a:hover,
+a:focus {
+    color: #bf1e2e;
+}
+
+.button.button-primary,
+button.button-primary,
+input[type="submit"].button-primary,
+input[type="reset"].button-primary,
+input[type="button"].button-primary {
+    background-color: #bf1e2e;
+    border-color: #bf1e2e;
+    transition: background-color 0.3s ease;
+}
+
+.button.button-primary:hover,
+button.button-primary:hover,
+input[type="submit"].button-primary:hover,
+input[type="reset"].button-primary:hover,
+input[type="button"].button-primary:hover,
+.button.button-primary:focus,
+button.button-primary:focus,
+input[type="submit"].button-primary:focus,
+input[type="reset"].button-primary:focus,
+input[type="button"].button-primary:focus {
+    background-color: #e23345;
+    border-color: #e23345;
+    transition: background-color 0.2s ease;
+}
+
+.main-header {
+    padding: 4rem;
+}
+
+.main-header__title {
+    font-size: 2rem;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.main-header__menu {
+    display: flex;
+    gap: 0rem 2rem;
+    list-style: none;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.main-header__menu__item>a {
+    color: #b7bcc0;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.main-header__menu__item>a:hover,
+.main-header__menu__item>a:focus {
+    color: #d6e3ee;
+    transition: color 0.2s ease;
+}
