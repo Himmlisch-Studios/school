@@ -4,7 +4,7 @@
 
 <section>
     <h1>Herramientas para estudiantes</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure unde, in neque voluptates beatae eveniet? Aliquam harum cumque unde eaque quidem iusto? Officia earum suscipit consequuntur id temporibus, voluptatibus quis.</p>
+    <p>Herramientas desarrolladas para y en la universidad, hechas <a href="https://github.com/Himmlisch-Studios/school" target="_blank">código abierto</a> para todos los que las necesiten.</p>
 </section>
 
 <section>
@@ -14,7 +14,7 @@
             <strong>Redacción</strong>
             <ul>
                 <li>
-                    <a href="">Generador de formato APA</a>
+                    <a href="/apa">Generador de formato APA</a>
                 </li>
             </ul>
         </li>
@@ -22,10 +22,10 @@
             <strong>Probabilidad y Estadística</strong>
             <ul>
                 <li>
-                    <a href="">Calculadora tabla de frecuencias no agrupadas</a>
+                    <a href="/frecuencias#no-agrupadas">Calculadora tabla de frecuencias no agrupadas</a>
                 </li>
                 <li>
-                    <a href="">Calculadora tabla de frecuencias agrupadas</a>
+                    <a href="/frecuencias#agrupadas">Calculadora tabla de frecuencias agrupadas</a>
                 </li>
             </ul>
         </li>
@@ -33,13 +33,13 @@
             <strong>Métodos numéricos</strong>
             <ul>
                 <li>
-                    <a href="">Calculadora Método de Bisección</a>
+                    <a href="/biseccion">Calculadora Método de Bisección</a>
                 </li>
                 <li>
-                    <a href="">Calculadora Método de Gauss-Seidel</a>
+                    <a href="/gauss">Calculadora Método de Gauss-Seidel</a>
                 </li>
                 <li>
-                    <a href="">Calculadora Método de Lin Bairstow</a>
+                    <a href="/lin">Calculadora Método de Lin Bairstow</a>
                 </li>
             </ul>
         </li>
