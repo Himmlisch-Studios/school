@@ -16,7 +16,7 @@
                 <span>Adivinar datos</span>
                 <input type="checkbox" name="guess" id="guess" checked>
             </label>
-            <p><small>Tratará de adivinar los datos vacios de artículos mal formados</small></p>
+            <p><small><span aria-hidden="true">⚠️</span> Tratará de adivinar los datos vacios de artículos mal formados</small></p>
         </div>
     </div>
 </form>

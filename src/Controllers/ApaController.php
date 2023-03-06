@@ -46,6 +46,7 @@ class ApaController
             redirect('/apa');
         }
 
+        flash('¡Exitosamente generado!', 'success');
         redirect('/apa/result?' . http_build_query($apa->getApaAsArray()));
     }
 }
