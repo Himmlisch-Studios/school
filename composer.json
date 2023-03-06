@@ -15,7 +15,10 @@
         }
     ],
     "require": {
-        "foil/foil": "^0.6.7"
+        "foil/foil": "^0.6.7",
+        "symfony/dom-crawler": "^6.2",
+        "symfony/css-selector": "^6.2",
+        "nesbot/carbon": "^2.66"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.2"
