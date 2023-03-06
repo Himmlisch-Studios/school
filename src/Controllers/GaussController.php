@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-class BiseccionController
+class GaussController
 {
     function form()
     {
-        return view('biseccion');
+        return view('gauss');
     }
 
     function action()

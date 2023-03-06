@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-class BiseccionController
+class LinController
 {
     function form()
     {
-        return view('biseccion');
+        return view('lin');
     }
 
     function action()
