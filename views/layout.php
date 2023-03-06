@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/css/style.css">
 
-    <title>School Utilities - Himmlisch Studios</title>
+    <title>Utilidades Escolares - Himmlisch Studios</title>
 </head>
 
 <body>
@@ -16,6 +16,7 @@
         <?php $this->section('content') ?>
         <?php $this->stop() ?>
     </main>
+    <?= isset($_SESSION['msg']) ? $this->insert('components/notice') : '' ?>
 </body>
 
 </html>

@@ -7,6 +7,9 @@ $app->init();
 
 $action = match ($app->uri) {
     '/' => 'HomeController',
+    '/apa' => 'ApaController@form',
+    '/apa/submit' => 'ApaController@action',
+    '/apa/result' => 'ApaController@result',
     default => 'ErrorController@code404'
 };
 
@@ -24,4 +27,5 @@ try {
     $body = (new \App\Controllers\ErrorController())->code500($th->getMessage());
 }
 
-echo $body;
+$app->setBody($body)
+    ->show();

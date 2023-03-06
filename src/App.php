@@ -12,6 +12,7 @@ class App
     public string $csrf;
     public string $method;
     public \Foil\Engine $engine;
+    protected string $body;
 
     public function __construct(
         public string $root
@@ -63,5 +64,20 @@ class App
             'folders' => ["{$this->root}/views"]
         ]);
         $this->engine = $foil->engine();
+    }
+
+    public function setBody(string $body)
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    public function show()
+    {
+        echo $this->body;
+
+        if (isset($_SESSION['msg']) && count($_SESSION['msg']) > 0) {
+            $_SESSION['msg'] = [];
+        }
     }
 }
