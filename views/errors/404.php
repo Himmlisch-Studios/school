@@ -3,6 +3,6 @@
 <?php $this->section('content') ?>
 
 <h1>Error 404</h1>
-<p>Looks like you're lost</p>
+<p>Parece que estás perdido.</p>
 
 <?php $this->append() ?>
