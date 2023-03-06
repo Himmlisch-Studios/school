@@ -62,6 +62,20 @@ input {
     color: #000;
 }
 
+.apa-cite {
+    background-color: #1f2429;
+    color: #d6e3ee;
+    margin: 0 0 2rem 0;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    font-size: 2rem;
+    cursor: text;
+}
+
+.apa-cite a {
+    pointer-events: none;
+}
+
 .main-header {
     padding: 4rem;
 }

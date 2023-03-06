@@ -20,7 +20,7 @@ class ApaService
         curl_setopt_array($curl, [
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_MAXREDIRS => 1,
             CURLOPT_TIMEOUT => 20,
         ]);
         $data = curl_exec($curl);
@@ -94,11 +94,9 @@ class ApaService
             return $title;
         }
 
-        try {
-            return $this->root->filter('h1')->text();
-        } catch (\Throwable $th) {
-            return null;
-        }
+        return $this->root->filter('h1')->text(
+            $this->root->filter('title')->text('')
+        );
     }
 
     public function getDate()
@@ -118,11 +116,23 @@ class ApaService
         }
 
         if ($this->guess) {
+            $title = $this->getTitle();
+            $millenium = substr(Carbon::now()->year . '', 0, 2);
+
+            preg_match("/$millenium\d{2}/", "$title", $matches);
+
+            if (isset($matches[0])) {
+                return $matches[0];
+            }
+
             $url = urlencode($this->url);
             $data = json_decode($this->http("https://archive.org/wayback/available?url=$url"), true);
             if (isset($data['archived_snapshots']) && count($data['archived_snapshots']) > 0) {
-                $date = Carbon::createFromFormat('YYYYMMDDhhmmss', $data['closest']['20130919044612']);
-                return $date->toFormattedDateString();
+                $date = Carbon::createFromFormat(
+                    'Ymdhis',
+                    $data['archived_snapshots']['closest']['timestamp']
+                );
+                return $date->year;
             }
         }
     }
@@ -134,8 +144,7 @@ class ApaService
 
     public function getPlace()
     {
-        // TODO:
-        return '';
+        return ($this->schema['contentLocation'] ?? $this->schema['locationCreated'])['name'] ?? '';
     }
 
     public function getUrl()
@@ -177,47 +186,44 @@ class ApaService
         if ((isset($this->schema['author']['@type']) && $this->schema['author']['@type'] === 'Person') ||
             (!isset($this->schema['author']['@type']) && count(explode(' ', $author)) <= 4)
         ) {
-            return $this->formatAuthorName($author);
+            return $this->getNames($author);
         }
 
-        return $author;
+        return $this->getNames($author);
+    }
+
+    public function getNames(string $string)
+    {
+        $name = trim($string);
+        $names = explode(' ', $name);
+        if (count($names) == 1) {
+            return [
+                'surname' => $names[0],
+                'names' => null,
+            ];
+        }
+
+        return [
+            'names' => implode(' ', array_slice($names, 0, count($names) - 1)),
+            'surname' => $names[count($names) - 1],
+        ];
     }
 
     public function formatAuthorName(string $author)
     {
-        $author = trim($author);
-        $names = explode(' ', $author);
-        if (count($names) == 1) {
-            return $names[0];
-        }
-
-        return implode(', ', [
-            $names[count($names) - 1],
-            implode(' ', array_map(function ($v) {
-                $v = str_split(trim($v))[0] ?? null;
-                if (!$v) {
-                    return null;
-                }
-                return $v . '.';
-            }, array_slice($names, 0, count($names) - 1)))
-        ]);
+        return implode(', ', $this->getNames($author));
     }
 
     public function getApaAsArray()
     {
         $data = array_filter([
-            'author' => $this->getAuthor(),
+            ...$this->getAuthor(),
             'date' => $this->getDate(),
             'title' => $this->getTitle(),
             'place' => $this->getPlace(),
             'publisher' => $this->getPublisher(),
+            'url' => $this->url
         ], fn ($v) => $v);
-
-        if (isset($data['author']) && !isset($data['date'])) $data['author'] = "{$data['author']}.";
-        if (isset($data['date'])) $data['date'] = "({$data['date']}).";
-        if (isset($data['title'])) $data['title'] = "{$data['title']}.";
-        if (isset($data['place'])) $data['place'] = "{$data['place']}.";
-        if (isset($data['publisher'])) $data['publisher'] = "{$data['publisher']}.";
 
         return $data;
     }
