@@ -17,13 +17,38 @@ class ApaService
     protected function http(string $url)
     {
         $curl = curl_init($url);
+
+        $url = str_replace(['https://', 'http://'], ['', ''], $url);
+        $query = substr($url, strpos($url, '/') + 1);
+
         curl_setopt_array($curl, [
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_MAXREDIRS => 1,
-            CURLOPT_TIMEOUT => 20,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_HTTPHEADER => [
+                'Host: ' . str_replace("/$query", '', $url),
+                'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/110.0',
+                'Referer: https://google.com/search?q=' . http_build_query([str_replace('-', ' ', $query)]),
+                'Accept-Language: en-US',
+                'Accept-Encoding: gzip, deflate',
+                'DNT: 1',
+                'Sec-Fetch-Dest: document',
+                'Sec-Fetch-Mode: navigate',
+                'Sec-Fetch-Site: cross-site',
+                'Pragma: no-cache',
+                'Cache-Control: no-cache'
+            ]
         ]);
         $data = curl_exec($curl);
+
+        // Deflates
+        if (strlen($data) && (curl_errno($curl) == CURLE_OK) && (curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200)) {
+            if ((ord($data[0]) == 0x1f) && (ord($data[1]) == 0x8b)) {
+                $data = gzinflate(substr($data, 10));
+            }
+        }
+
         curl_close($curl);
 
         return $data;
@@ -104,13 +129,18 @@ class ApaService
         try {
             $date = $this->schema['dateModified'] ?? $this->schema['datePublished'] ??
                 $this->article->filter('[itemprop="dateModified"]')->first()->text(
-                    $this->article->filter('[itemprop="datePublished"]')->first()->text('')
+                    $this->article->filter('[itemprop="datePublished"]')->first()->text(
+                        $this->article->filter('time')->first()->text('')
+                    )
                 );
-            if ($date) {
-                $date = Carbon::parse($this->article->filter('time')->first()->text());
 
-                return $date->toFormattedDateString();
+            if (!boolval(strtotime($date))) {
+                return $date;
             }
+
+            $date = Carbon::parse($date);
+
+            return $date->toFormattedDateString();
         } catch (\Throwable $e) {
             return null;
         }
