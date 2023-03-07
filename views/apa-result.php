@@ -3,6 +3,7 @@
 <?php $this->section('content') ?>
 
 <h1>Resultado APA</h1>
+<p style="display: <?= boolval($this->expires) ? 'block' : 'none' ?>"><small><i>Versión guardada. Expira en <time><?= Carbon\Carbon::createFromTimestamp($this->expires)->diffInRealMinutes() ?></time> minutos</i></small></p>
 <blockquote class="apa-cite" id="apa"></blockquote>
 <form action="#" id="apa-result">
     <label>

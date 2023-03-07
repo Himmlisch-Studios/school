@@ -21,7 +21,12 @@ class ApaController
             'place' => FILTER_DEFAULT,
             'publisher' => FILTER_DEFAULT,
             'url' => FILTER_DEFAULT,
+            'expires' => FILTER_VALIDATE_INT
         ]);
+        if (isset($_GET['expires']) && $data['expires'] == null) {
+            flash('Solicitud mal formada');
+            redirect('/apa');
+        }
         return view('apa-result', $data);
     }
 
@@ -47,6 +52,6 @@ class ApaController
         }
 
         flash('¡Exitosamente generado!', 'success');
-        redirect('/apa/result?' . http_build_query($apa->getApaAsArray()));
+        redirect('/apa/result?' . http_build_query([...$apa->getApaAsArray(), 'expires' => $apa->getExpires()]));
     }
 }

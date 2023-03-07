@@ -23,6 +23,7 @@ class App
     public function init(): void
     {
         session_start() ?? throw new Exception('Session handler couldn\'t load');
+        \Carbon\Carbon::setLocale('es_MX');
         $this->initSecurity();
         $this->initRequest();
         $this->initEngine();

@@ -43,7 +43,7 @@ if (!function_exists('redirect')) {
     }
 }
 
-function cache($filename, callable $fn, int $expires = 108000, bool $force = false)
+function cache($filename, callable $fn, int $expires = 1800, bool $force = false, ?callable $retrieved = null)
 {
     $filename = trim($filename, DIRECTORY_SEPARATOR);
 
@@ -74,10 +74,13 @@ function cache($filename, callable $fn, int $expires = 108000, bool $force = fal
 
     if (!$force && is_file($filePath)) {
         $content = file_get_contents($filePath);
-        $shouldExpire = strtok($content, "\n");
+        $shouldExpire = (int) strtok($content, "\n");
 
-        if (time() < (int)$shouldExpire) {
+        if (time() < $shouldExpire) {
             $content = substr($content, strpos($content, "\n") + 1);
+            if (!is_null($retrieved)) {
+                $retrieved($shouldExpire);
+            }
             return $content;
         }
     }

@@ -13,6 +13,7 @@ class ApaService
     protected Crawler $article;
     protected bool $guess = false;
     protected string $url;
+    protected int $expires;
 
     protected function http(string $url)
     {
@@ -77,18 +78,25 @@ class ApaService
         $urlParts = parse_url($url);
         $cacheKey = md5(implode([
             trim($urlParts['host'], '/'),
-            trim($urlParts['path'], '/')
+            trim($urlParts['path'], '/'),
+            $this->guess
         ]));
 
-        $this->html = cache("/apa/$cacheKey", function () use ($url) {
-            $html = $this->http($url);
+        $this->html = cache(
+            filename: "/apa/$cacheKey",
+            fn: function () use ($url) {
+                $html = $this->http($url);
 
-            if (!$html) {
-                throw new \Exception("Sitio web no encontrado.", 1);
+                if (!$html) {
+                    throw new \Exception("Sitio web no encontrado.", 1);
+                }
+
+                return str_replace(["\r", "\n"], '', $html);
+            },
+            retrieved: function ($expires) {
+                $this->expires = $expires;
             }
-
-            return str_replace(["\r", "\n"], '', $html);
-        });
+        );
 
 
         $this->root = new Crawler($this->html);
@@ -119,6 +127,15 @@ class ApaService
         $this->article = $posibilities[0];
 
         return $this;
+    }
+
+    public function getExpires()
+    {
+        if (isset($this->expires)) {
+            return $this->expires;
+        }
+
+        return null;
     }
 
     public function getTitle()
