@@ -74,12 +74,22 @@ class ApaService
     public function init(string $url)
     {
         $this->url = $url;
+        $urlParts = parse_url($url);
+        $cacheKey = md5(implode([
+            trim($urlParts['host'], '/'),
+            trim($urlParts['path'], '/')
+        ]));
 
-        $this->html = $this->http($url);
+        $this->html = cache("/apa/$cacheKey", function () use ($url) {
+            $html = $this->http($url);
 
-        if (!$this->html) {
-            throw new \Exception("Sitio web no encontrado.", 1);
-        }
+            if (!$html) {
+                throw new \Exception("Sitio web no encontrado.", 1);
+            }
+
+            return str_replace(["\r", "\n"], '', $html);
+        });
+
 
         $this->root = new Crawler($this->html);
 
@@ -174,7 +184,7 @@ class ApaService
 
     public function getPlace()
     {
-        return ($this->schema['contentLocation'] ?? $this->schema['locationCreated'])['name'] ?? '';
+        return ($this->schema['contentLocation'] ?? $this->schema['locationCreated'] ?? [])['name'] ?? '';
     }
 
     public function getUrl()

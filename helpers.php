@@ -42,3 +42,45 @@ if (!function_exists('redirect')) {
         exit;
     }
 }
+
+function cache($filename, callable $fn, int $expires = 108000, bool $force = false)
+{
+    $filename = trim($filename, DIRECTORY_SEPARATOR);
+
+    $path = explode('/', $filename);
+    array_pop($path);
+    $path = implode('/', $path);
+
+    $cachePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'himmlisch-school';
+
+    $folderPath = $cachePath . DIRECTORY_SEPARATOR . $path;
+    $filePath = $cachePath . DIRECTORY_SEPARATOR . $filename;
+
+    $expires = time() + $expires;
+
+    $save = function () use ($fn, $filePath, $expires) {
+        $return = $fn();
+        if ($return) {
+            file_put_contents($filePath, "$expires\n$return");
+        }
+        return $return;
+    };
+
+    if (!is_dir($folderPath)) {
+        mkdir($folderPath, 0755, true);
+
+        return $save();
+    }
+
+    if (!$force && is_file($filePath)) {
+        $content = file_get_contents($filePath);
+        $shouldExpire = strtok($content, "\n");
+
+        if (time() < (int)$shouldExpire) {
+            $content = substr($content, strpos($content, "\n") + 1);
+            return $content;
+        }
+    }
+
+    return $save();
+}
