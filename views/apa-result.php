@@ -56,7 +56,7 @@
                 [
                     [
                         surname.value,
-                        `${names.value.split(' ').map((v) => (v[0]) ? `${v[0]}.` : '').join(' ')}`
+                        `${names.value.split(' ').map((v) => (v[0]) ? `${v[0]}.` : '')[0]}`
                     ].filter((v) => v).join(', '),
                     date.value.trim() ? `(${date.value.trim()})` : '',
                 ].join(' ').trim(),
