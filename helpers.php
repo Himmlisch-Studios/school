@@ -43,47 +43,49 @@ if (!function_exists('redirect')) {
     }
 }
 
-function cache($filename, callable $fn, int $expires = 1800, bool $force = false, ?callable $retrieved = null)
-{
-    $filename = trim($filename, DIRECTORY_SEPARATOR);
+if (!function_exists('cache')) {
+    function cache($filename, callable $fn, int $expires = 1800, bool $force = false, ?callable $retrieved = null)
+    {
+        $filename = trim($filename, DIRECTORY_SEPARATOR);
 
-    $path = explode('/', $filename);
-    array_pop($path);
-    $path = implode('/', $path);
+        $path = explode('/', $filename);
+        array_pop($path);
+        $path = implode('/', $path);
 
-    $cachePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'himmlisch-school';
+        $cachePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'himmlisch-school';
 
-    $folderPath = $cachePath . DIRECTORY_SEPARATOR . $path;
-    $filePath = $cachePath . DIRECTORY_SEPARATOR . $filename;
+        $folderPath = $cachePath . DIRECTORY_SEPARATOR . $path;
+        $filePath = $cachePath . DIRECTORY_SEPARATOR . $filename;
 
-    $expires = time() + $expires;
+        $expires = time() + $expires;
 
-    $save = function () use ($fn, $filePath, $expires) {
-        $return = $fn();
-        if ($return) {
-            file_put_contents($filePath, "$expires\n$return");
+        $save = function () use ($fn, $filePath, $expires) {
+            $return = $fn();
+            if ($return) {
+                file_put_contents($filePath, "$expires\n$return");
+            }
+            return $return;
+        };
+
+        if (!is_dir($folderPath)) {
+            mkdir($folderPath, 0755, true);
+
+            return $save();
         }
-        return $return;
-    };
 
-    if (!is_dir($folderPath)) {
-        mkdir($folderPath, 0755, true);
+        if (!$force && is_file($filePath)) {
+            $content = file_get_contents($filePath);
+            $shouldExpire = (int) strtok($content, "\n");
+
+            if (time() < $shouldExpire) {
+                $content = substr($content, strpos($content, "\n") + 1);
+                if (!is_null($retrieved)) {
+                    $retrieved($shouldExpire);
+                }
+                return $content;
+            }
+        }
 
         return $save();
     }
-
-    if (!$force && is_file($filePath)) {
-        $content = file_get_contents($filePath);
-        $shouldExpire = (int) strtok($content, "\n");
-
-        if (time() < $shouldExpire) {
-            $content = substr($content, strpos($content, "\n") + 1);
-            if (!is_null($retrieved)) {
-                $retrieved($shouldExpire);
-            }
-            return $content;
-        }
-    }
-
-    return $save();
 }
