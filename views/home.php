@@ -18,7 +18,7 @@
                 </li>
             </ul>
         </li>
-        <li>
+        <!--<li>
             <strong>Probabilidad y Estadística</strong>
             <ul>
                 <li>
@@ -42,7 +42,7 @@
                     <a href="/lin">Calculadora Método de Lin Bairstow</a>
                 </li>
             </ul>
-        </li>
+        </li>-->
     </ul>
 </section>
 
