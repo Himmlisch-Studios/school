@@ -17,6 +17,7 @@
         <?php $this->stop() ?>
     </main>
     <?= isset($_SESSION['msg']) ? $this->insert('components/notice') : '' ?>
+    <?= $this->insert('components/footer') ?>
 </body>
 
 </html>

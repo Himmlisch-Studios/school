@@ -13,6 +13,9 @@ body {
     background-color: #272f35;
     color: #fff;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(min(100vh, 1080px));
 }
 
 h1,
@@ -74,6 +77,13 @@ input {
 
 .apa-cite a {
     pointer-events: none;
+}
+
+.footer {
+    padding: 4rem;
+    padding-top: 6rem;
+    text-align: center;
+    margin-top: auto;
 }
 
 .main-header {
