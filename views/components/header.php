@@ -1,6 +1,6 @@
 <header class="main-header">
     <div class="container">
-        <a class="main-header__title" href="/"><span aria-hidden="true">🎓</span> Himmlisch School</a>
+        <a class="main-header__title" href="/"><span aria-hidden="true">🏛️</span> Himmlisch School</a>
         <menu class="main-header__menu">
             <li class="main-header__menu__item"><a href="/apa">Generador APA</a></li>
             <!--
