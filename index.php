@@ -10,6 +10,12 @@ $action = match ($app->uri) {
     '/apa' => 'ApaController@form',
     '/apa/submit' => 'ApaController@action',
     '/apa/result' => 'ApaController@result',
+    '/biseccion' => 'BiseccionController@form',
+    '/biseccion/submit' => 'BiseccionController@action',
+    '/biseccion/result' => 'BiseccionController@result',
+    '/lin' => 'LinController@form',
+    '/lin/submit' => 'LinController@action',
+    '/lin/result' => 'LinController@result',
     default => 'ErrorController@code404'
 };
 
