@@ -77,7 +77,7 @@ class App
     {
         echo $this->body;
 
-        if (isset($_SESSION['msg']) && count($_SESSION['msg']) > 0) {
+        if (count($_SESSION['msg'] ?? []) > 0) {
             $_SESSION['msg'] = [];
         }
     }
