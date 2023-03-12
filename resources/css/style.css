@@ -193,3 +193,49 @@ a.disabled {
     border-color: #bf941e;
     color: #fff;
 }
+
+#himmlisch {
+    padding: 4rem;
+    border-radius: 2rem;
+    background-color: #fff;
+    border: 0;
+    box-shadow: 0px 0px 5px 1px #000;
+    text-align: center;
+    width: calc(min(720px, 100vw) - 8rem);
+}
+
+#himmlisch iframe {
+    margin: 0 auto;
+    width: calc(min(560px, 100%));
+}
+
+#himmlisch::backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#himmlisch .buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.carousel {
+    width: 100%;
+    overflow: hidden;
+    max-height: 20vw;
+}
+
+.carousel__container {
+    display: flex;
+    width: max-content;
+    height: 20vw;
+}
+
+.carousel__container img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    object-position: center;
+}
